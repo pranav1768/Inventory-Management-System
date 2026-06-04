@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 /**
  * Database Configuration & Core Helpers
  * Ordnance Factory Varangaon – Inventory Management System v3.0
@@ -46,40 +45,6 @@ function getDBConnection(): mysqli {
 function requireLogin(): void {
     if (!isset($_SESSION['user_id'])) {
         header('Location: login.php');
-=======
-// ============================================
-// Database Configuration
-// Ordnance Factory Varangaon - IMS
-// ============================================
-
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');       // Change to your MySQL username
-define('DB_PASS', '');           // Change to your MySQL password
-define('DB_NAME', 'ordnance_ims');
-
-function getDBConnection() {
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    if ($conn->connect_error) {
-        die('<div style="color:red; font-family:Arial; padding:20px;">
-            <h3>Database Connection Failed</h3>
-            <p>' . $conn->connect_error . '</p>
-            <p>Please check your database configuration in <b>includes/db.php</b></p>
-        </div>');
-    }
-    $conn->set_charset("utf8");
-    return $conn;
-}
-
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Auth check function
-function requireLogin() {
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: login.php");
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
         exit();
     }
 }
