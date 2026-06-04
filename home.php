@@ -1,6 +1,5 @@
 <?php
 require_once 'includes/db.php';
-<<<<<<< HEAD
 requireAdmin(); // Admin-only page — operators are redirected to operator_dashboard.php
 
 $conn = getDBConnection();
@@ -9,19 +8,6 @@ $pageTitle = 'Dashboard – OFV Inventory Management System';
 // Handle Update Inventory action
 if (isset($_POST['confirm_update_inventory'])) {
     $conn->query("UPDATE products SET last_updated = NOW() WHERE status='active'");
-=======
-requireLogin();
-
-$conn = getDBConnection();
-$pageTitle = 'Home – OFV Inventory Management System';
-
-// Handle Update Inventory action
-$updateMsg = '';
-if (isset($_POST['confirm_update_inventory'])) {
-    // Mark all products as updated (update last_updated timestamp)
-    $conn->query("UPDATE products SET last_updated = NOW() WHERE status='active'");
-    // Log the action
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
     $products_res = $conn->query("SELECT * FROM products WHERE status='active'");
     while ($p = $products_res->fetch_assoc()) {
         logAction($conn, $p['id'], $p['product_name'], $p['product_code'],
