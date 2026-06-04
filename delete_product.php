@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 /**
  * Delete Product (Soft Delete)
  * Ordnance Factory Varangaon – Inventory Management System
@@ -20,17 +19,6 @@ if (!$id) {
 $conn = getDBConnection();
 
 // Fetch product before marking as deleted
-=======
-require_once 'includes/db.php';
-requireLogin();
-
-$id = intval($_GET['id'] ?? 0);
-if (!$id) { header("Location: home.php"); exit(); }
-
-$conn = getDBConnection();
-
-// Fetch product for log
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 $stmt = $conn->prepare("SELECT * FROM products WHERE id = ? AND status='active'");
 $stmt->bind_param("i", $id);
 $stmt->execute();
