@@ -1,16 +1,12 @@
 -- ============================================================
 --  OFV Inventory Management System – Database Setup Script
 --  Ordnance Factory Varangaon, Ministry of Defence
-<<<<<<< HEAD
 --  v3.0 – Multi-role login system
-=======
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS ordnance_ims CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE ordnance_ims;
 
-<<<<<<< HEAD
 -- ── Users table (admin + section operators) ──────────────────
 CREATE TABLE IF NOT EXISTS users (
     id           INT AUTO_INCREMENT PRIMARY KEY,
@@ -24,17 +20,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- ── Products table ────────────────────────────────────────────
-=======
-CREATE TABLE IF NOT EXISTS users (
-    id         INT AUTO_INCREMENT PRIMARY KEY,
-    username   VARCHAR(50)  NOT NULL UNIQUE,
-    password   VARCHAR(255) NOT NULL,
-    full_name  VARCHAR(100),
-    role       VARCHAR(20)  DEFAULT 'staff',
-    created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
-);
-
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 CREATE TABLE IF NOT EXISTS products (
     id           INT AUTO_INCREMENT PRIMARY KEY,
     product_name VARCHAR(150) NOT NULL,
@@ -47,10 +32,7 @@ CREATE TABLE IF NOT EXISTS products (
     status       VARCHAR(20)  DEFAULT 'active'
 );
 
-<<<<<<< HEAD
 -- ── Audit / history table ─────────────────────────────────────
-=======
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 CREATE TABLE IF NOT EXISTS inventory_history (
     id           INT AUTO_INCREMENT PRIMARY KEY,
     product_id   INT,
@@ -65,7 +47,6 @@ CREATE TABLE IF NOT EXISTS inventory_history (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
 );
 
-<<<<<<< HEAD
 -- ── Admin user ────────────────────────────────────────────────
 INSERT INTO users (username, password, full_name, role, section, product_code) VALUES
 ('admin', 'admin123', 'Administrator', 'admin', NULL, NULL)
@@ -82,14 +63,6 @@ INSERT INTO users (username, password, full_name, role, section, product_code) V
 ON DUPLICATE KEY UPDATE password = VALUES(password);
 
 -- ── OFV Products ──────────────────────────────────────────────
-=======
--- Demo login: admin / admin123
-INSERT INTO users (username, password, full_name, role) VALUES
-('admin', 'admin123', 'Administrator', 'admin')
-ON DUPLICATE KEY UPDATE password = 'admin123';
-
--- OFV Product Inventory (Ordnance-specific items only)
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 INSERT IGNORE INTO products (product_name, product_code, quantity, unit, category, date_added) VALUES
 ('5.56 Bullet',       'OFV-556',  12500, 'Rounds',    'Ammunition',            '2025-01-10'),
 ('7.62 Bullet',       'OFV-762',   8750, 'Rounds',    'Ammunition',            '2025-01-10'),
