@@ -49,7 +49,6 @@ function requireLogin(): void {
     }
 }
 
-<<<<<<< HEAD
 /** Redirect non-admins away */
 function requireAdmin(): void {
     requireLogin();
@@ -98,13 +97,3 @@ function logAction(
     $stmt->execute();
     $stmt->close();
 }
-=======
-// Log inventory action
-function logAction($conn, $product_id, $product_name, $product_code, $action_type, $old_qty, $new_qty, $changed_by, $remarks = '') {
-    $stmt = $conn->prepare("INSERT INTO inventory_history (product_id, product_name, product_code, action_type, old_quantity, new_quantity, changed_by, remarks) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("isssiiis", $product_id, $product_name, $product_code, $action_type, $old_qty, $new_qty, $changed_by, $remarks);
-    $stmt->execute();
-    $stmt->close();
-}
-?>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
