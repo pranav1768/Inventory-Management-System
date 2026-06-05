@@ -25,7 +25,6 @@ $stmt->execute();
 $product = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-<<<<<<< HEAD
 if (!$product) {
     $conn->close();
     header("Location: home.php");
@@ -54,21 +53,3 @@ logAction(
 $conn->close();
 header("Location: home.php?success=3");
 exit();
-=======
-if ($product) {
-    // Soft delete
-    $del = $conn->prepare("UPDATE products SET status='deleted' WHERE id=?");
-    $del->bind_param("i", $id);
-    $del->execute();
-    $del->close();
-
-    // Log the action
-    logAction($conn, $id, $product['product_name'], $product['product_code'],
-              'DELETE', $product['quantity'], 0, $_SESSION['username'], 'Product deleted');
-}
-
-$conn->close();
-header("Location: home.php?success=3");
-exit();
-?>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
