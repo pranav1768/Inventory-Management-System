@@ -1,22 +1,14 @@
 <?php
 require_once 'includes/db.php';
-<<<<<<< HEAD
 requireAdmin(); // Admin-only page
 
 $conn      = getDBConnection();
 $pageTitle = 'Audit History – OFV IMS';
-=======
-requireLogin();
-
-$conn = getDBConnection();
-$pageTitle = 'Inventory History – OFV IMS';
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 
 // Filters
 $filter_action = trim($_GET['action_type'] ?? '');
 $filter_date   = trim($_GET['date_filter'] ?? '');
 $search        = trim($_GET['search'] ?? '');
-<<<<<<< HEAD
 $page          = max(1, intval($_GET['page'] ?? 1));
 $per_page      = 20;
 $offset        = ($page - 1) * $per_page;
@@ -139,93 +131,10 @@ while ($r = $res->fetch_assoc()) $counts[$r['action_type']] = $r['c'];
                 <i class="fas fa-times"></i>
                 Clear
             </a>
-=======
-
-$sql = "SELECT * FROM inventory_history WHERE 1=1";
-if ($filter_action) {
-    $fa = $conn->real_escape_string($filter_action);
-    $sql .= " AND action_type = '$fa'";
-}
-if ($filter_date) {
-    $fd = $conn->real_escape_string($filter_date);
-    $sql .= " AND DATE(action_date) = '$fd'";
-}
-if ($search) {
-    $s = $conn->real_escape_string($search);
-    $sql .= " AND (product_name LIKE '%$s%' OR product_code LIKE '%$s%' OR changed_by LIKE '%$s%')";
-}
-$sql .= " ORDER BY action_date DESC LIMIT 200";
-$history = $conn->query($sql);
-$total   = $history ? $history->num_rows : 0;
-
-// Summary counts
-$counts = [];
-$res = $conn->query("SELECT action_type, COUNT(*) as c FROM inventory_history GROUP BY action_type");
-while ($row = $res->fetch_assoc()) $counts[$row['action_type']] = $row['c'];
-?>
-<?php include 'includes/header.php'; ?>
-
-<div class="page-title-bar">
-    <div>
-        <h2>📋 Inventory Update History</h2>
-        <div class="breadcrumb"><a href="home.php" style="color:var(--saffron);text-decoration:none;">Home</a> &rsaquo; <span>History</span></div>
-    </div>
-    <a href="home.php" class="btn btn-navy">← Back to Home</a>
-</div>
-
-<!-- Summary Cards -->
-<div class="stats-grid">
-    <div class="stat-card s1">
-        <span class="stat-icon">📊</span>
-        <div class="stat-label">Total Actions</div>
-        <div class="stat-value"><?= array_sum($counts) ?></div>
-    </div>
-    <div class="stat-card s2">
-        <span class="stat-icon">➕</span>
-        <div class="stat-label">Products Added</div>
-        <div class="stat-value"><?= $counts['ADD'] ?? 0 ?></div>
-    </div>
-    <div class="stat-card s3">
-        <span class="stat-icon">✏️</span>
-        <div class="stat-label">Products Updated</div>
-        <div class="stat-value"><?= ($counts['UPDATE'] ?? 0) + ($counts['INVENTORY_UPDATE'] ?? 0) ?></div>
-    </div>
-    <div class="stat-card s4">
-        <span class="stat-icon">🗑️</span>
-        <div class="stat-label">Products Deleted</div>
-        <div class="stat-value"><?= $counts['DELETE'] ?? 0 ?></div>
-    </div>
-</div>
-
-<!-- Filter Bar -->
-<div class="table-card">
-    <div class="table-card-header">
-        <h3>📋 Action Log</h3>
-    </div>
-
-    <div class="table-search-bar">
-        <form method="GET" style="display:flex;gap:10px;flex-wrap:wrap;width:100%;align-items:center;">
-            <input type="text" name="search" class="search-input"
-                   placeholder="Search product, code, or user..."
-                   value="<?= htmlspecialchars($search) ?>" style="flex:2;min-width:180px;">
-            <select name="action_type" style="padding:9px 14px;border:1px solid #ddd;border-radius:8px;font-size:13px;background:#f8f9fa;outline:none;">
-                <option value="">All Actions</option>
-                <option value="ADD" <?= $filter_action==='ADD'?'selected':'' ?>>➕ Add</option>
-                <option value="UPDATE" <?= $filter_action==='UPDATE'?'selected':'' ?>>✏️ Update</option>
-                <option value="DELETE" <?= $filter_action==='DELETE'?'selected':'' ?>>🗑️ Delete</option>
-                <option value="INVENTORY_UPDATE" <?= $filter_action==='INVENTORY_UPDATE'?'selected':'' ?>>🔄 Inventory Update</option>
-            </select>
-            <input type="date" name="date_filter" value="<?= htmlspecialchars($filter_date) ?>"
-                   style="padding:9px 14px;border:1px solid #ddd;border-radius:8px;font-size:13px;background:#f8f9fa;outline:none;">
-            <button type="submit" class="btn btn-navy btn-sm">🔍 Filter</button>
-            <?php if ($filter_action || $filter_date || $search): ?>
-            <a href="history.php" class="btn btn-sm" style="background:#6c757d;color:white;">✕ Clear</a>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
             <?php endif; ?>
         </form>
     </div>
 
-<<<<<<< HEAD
     <!-- Table -->
     <div class="table-wrapper">
         <table class="data-table" aria-label="Audit history">
@@ -241,27 +150,10 @@ while ($row = $res->fetch_assoc()) $counts[$row['action_type']] = $row['c'];
                     <th scope="col" style="text-align:right;">Change</th>
                     <th scope="col">Updated By</th>
                     <th scope="col">Remarks</th>
-=======
-    <div style="overflow-x:auto;">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Date & Time</th>
-                    <th>Action</th>
-                    <th>Product Name</th>
-                    <th>Product Code</th>
-                    <th>Old Qty</th>
-                    <th>New Qty</th>
-                    <th>Change</th>
-                    <th>Updated By</th>
-                    <th>Remarks</th>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
                 </tr>
             </thead>
             <tbody>
             <?php
-<<<<<<< HEAD
             $row_num = $offset + 1;
 
             $action_badges = [
@@ -322,56 +214,12 @@ while ($row = $res->fetch_assoc()) $counts[$row['action_type']] = $row['c'];
                         <i class="fas fa-history"></i>
                         <p>No history records found for the selected filters.</p>
                     </div>
-=======
-            $i = 1;
-            $action_icons = [
-                'ADD'              => ['icon'=>'➕','color'=>'#155724','bg'=>'#d4edda'],
-                'UPDATE'           => ['icon'=>'✏️','color'=>'#004085','bg'=>'#cce5ff'],
-                'DELETE'           => ['icon'=>'🗑️','color'=>'#721c24','bg'=>'#f8d7da'],
-                'INVENTORY_UPDATE' => ['icon'=>'🔄','color'=>'#856404','bg'=>'#fff3cd'],
-            ];
-            if ($history && $history->num_rows > 0):
-                while ($row = $history->fetch_assoc()):
-                    $ai  = $action_icons[$row['action_type']] ?? ['icon'=>'❓','color'=>'#555','bg'=>'#eee'];
-                    $chg = $row['new_quantity'] - $row['old_quantity'];
-                    $chg_str = ($chg > 0) ? "+$chg" : "$chg";
-                    $chg_color = ($chg > 0) ? 'var(--green)' : (($chg < 0) ? '#dc3545' : '#999');
-            ?>
-            <tr>
-                <td style="color:#999;font-size:12px;"><?= $i++ ?></td>
-                <td style="font-size:12px;white-space:nowrap;">
-                    <?= date('d M Y', strtotime($row['action_date'])) ?><br>
-                    <span style="color:#999;"><?= date('h:i:s A', strtotime($row['action_date'])) ?></span>
-                </td>
-                <td>
-                    <span style="display:inline-flex;align-items:center;gap:5px;background:<?= $ai['bg'] ?>;color:<?= $ai['color'] ?>;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;">
-                        <?= $ai['icon'] ?> <?= str_replace('_', ' ', $row['action_type']) ?>
-                    </span>
-                </td>
-                <td><strong><?= htmlspecialchars($row['product_name'] ?? '—') ?></strong></td>
-                <td><span class="product-code"><?= htmlspecialchars($row['product_code'] ?? '—') ?></span></td>
-                <td style="text-align:center;"><?= number_format($row['old_quantity']) ?></td>
-                <td style="text-align:center;font-weight:600;"><?= number_format($row['new_quantity']) ?></td>
-                <td style="text-align:center;font-weight:700;color:<?= $chg_color ?>;"><?= $chg_str ?></td>
-                <td>
-                    <span style="background:#f0f0ff;color:var(--navy);padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;">
-                        👤 <?= htmlspecialchars($row['changed_by']) ?>
-                    </span>
-                </td>
-                <td style="font-size:12px;color:#666;"><?= htmlspecialchars($row['remarks'] ?: '—') ?></td>
-            </tr>
-            <?php endwhile; else: ?>
-            <tr>
-                <td colspan="10" style="text-align:center;padding:40px;color:#999;">
-                    📭 No history records found.
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
                 </td>
             </tr>
             <?php endif; ?>
             </tbody>
         </table>
     </div>
-<<<<<<< HEAD
 
     <!-- Pagination + Footer -->
     <div class="card-footer">
@@ -408,11 +256,6 @@ while ($row = $res->fetch_assoc()) $counts[$row['action_type']] = $row['c'];
         <?php else: ?>
         <span class="text-muted text-sm">Queried at: <?= date('d M Y, H:i') ?></span>
         <?php endif; ?>
-=======
-    <div class="table-footer">
-        <span>Showing <?= $total ?> record(s)</span>
-        <span>Filtered: <?= date('d M Y, h:i A') ?></span>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
     </div>
 </div>
 
