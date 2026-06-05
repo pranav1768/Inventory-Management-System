@@ -2,11 +2,7 @@
 require_once 'includes/db.php';
 
 if (isset($_SESSION['user_id'])) {
-<<<<<<< HEAD
     header("Location: " . (isAdmin() ? 'home.php' : 'operator_dashboard.php'));
-=======
-    header("Location: home.php");
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
     exit();
 }
 
@@ -20,24 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please enter both username and password.';
     } else {
         $conn = getDBConnection();
-<<<<<<< HEAD
         $stmt = $conn->prepare("SELECT id, username, password, full_name, role, section, product_code FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $user = $stmt->get_result()->fetch_assoc();
-=======
-        $stmt = $conn->prepare("SELECT id, username, password, full_name, role FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user   = $result->fetch_assoc();
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
         $stmt->close();
         $conn->close();
 
         $valid = false;
         if ($user) {
-<<<<<<< HEAD
             if (password_verify($password, $user['password'])) $valid = true;
             elseif ($user['password'] === $password) $valid = true;
         }
@@ -65,32 +52,10 @@ $sections = [
     ['code'=>'OFV-CAL','name'=>'Calibur',     'color'=>'#059669','bg'=>'#F0FDF4','user'=>'op_cal','pass'=>'ofvcal'],
     ['code'=>'OFV-PKG','name'=>'Packing',     'color'=>'#DB2777','bg'=>'#FDF2F8','user'=>'op_pkg','pass'=>'ofvpkg'],
 ];
-=======
-            if (password_verify($password, $user['password'])) {
-                $valid = true;
-            } elseif ($user['password'] === $password) {
-                $valid = true;
-            }
-        }
-
-        if ($valid) {
-            $_SESSION['user_id']   = $user['id'];
-            $_SESSION['username']  = $user['username'];
-            $_SESSION['full_name'] = $user['full_name'];
-            $_SESSION['role']      = $user['role'];
-            header("Location: home.php");
-            exit();
-        } else {
-            $error = 'Invalid username or password. Please try again.';
-        }
-    }
-}
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In &mdash; OFV Inventory Management System</title>
@@ -297,233 +262,5 @@ $sections = [
         document.getElementById('username').focus();
     }
 </script>
-=======
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ordnance Factory Varangaon - Login</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1a3a5c 0%, #0d2137 50%, #2e5c3a 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .login-container {
-      background-color: #ffffff;
-      padding: 40px 35px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .header img {
-      width: 70px;
-      height: 70px;
-      margin-bottom: 12px;
-    }
-
-    .header h1 {
-      font-size: 18px;
-      color: #1a3a5c;
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-
-    .header p {
-      font-size: 13px;
-      color: #666;
-    }
-
-    .divider {
-      border: none;
-      border-top: 1px solid #ddd;
-      margin: 20px 0;
-    }
-
-    /* Error message */
-    .alert-error {
-      background: #f8d7da;
-      border: 1px solid #f5c6cb;
-      border-left: 4px solid #dc3545;
-      color: #721c24;
-      padding: 10px 14px;
-      border-radius: 5px;
-      font-size: 13px;
-      margin-bottom: 18px;
-    }
-
-    .form-group { margin-bottom: 18px; }
-
-    .form-group label {
-      display: block;
-      font-size: 14px;
-      color: #333;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-
-    .form-group input[type="text"],
-    .form-group input[type="password"] {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 14px;
-      color: #333;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus { border-color: #1a3a5c; }
-
-    .password-wrapper { position: relative; }
-    .password-wrapper input { width: 100%; padding-right: 40px; }
-
-    .eye-label {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #aaa;
-      line-height: 0;
-    }
-    .eye-label:hover { color: #1a3a5c; }
-
-    .form-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      font-size: 13px;
-    }
-
-    .form-row label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #555;
-      cursor: pointer;
-      font-weight: normal;
-    }
-
-    .form-row a { color: #1a3a5c; text-decoration: none; }
-    .form-row a:hover { text-decoration: underline; }
-
-    .btn-login {
-      width: 100%;
-      padding: 11px;
-      background-color: #1a3a5c;
-      color: #ffffff;
-      font-size: 15px;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .btn-login:hover { background-color: #14304d; }
-
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      color: #999;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="login-container">
-
-    <div class="header">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Govt Logo" />
-      <h1>Ordnance Factory Varangaon</h1>
-      <p>Ministry of Defence</p>
-    </div>
-
-    <hr class="divider" />
-
-    <?php if ($error): ?>
-    <div class="alert-error">⚠️ <?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
-
-    <form method="POST">
-
-      <div class="form-group">
-        <label for="username">Employee / Service ID</label>
-        <input type="text" id="username" name="username"
-               placeholder="Enter your service ID"
-               value="<?= htmlspecialchars($_POST['username'] ?? '') ?>"
-               required autofocus />
-      </div>
-
-      <div class="form-group">
-        <label>Password</label>
-        <div class="password-wrapper">
-          <input type="password" name="password" id="passwordField"
-                 placeholder="Enter your password" required />
-          <span class="eye-label" onclick="togglePass()" id="eyeIcon">
-            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-            <svg id="eyeClosed" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-              <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-              <line x1="1" y1="1" x2="23" y2="23"/>
-            </svg>
-          </span>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label>
-          <input type="checkbox" /> Remember me
-        </label>
-        <a href="#">Forgot password?</a>
-      </div>
-
-      <button type="submit" class="btn-login">Login</button>
-
-    </form>
-
-    <div class="footer">
-      &copy; <?= date('Y') ?> Ordnance Factory Varangaon. All rights reserved.
-    </div>
-
-  </div>
-
-  <script>
-    function togglePass() {
-      const field = document.getElementById('passwordField');
-      const open  = document.getElementById('eyeOpen');
-      const closed = document.getElementById('eyeClosed');
-      if (field.type === 'password') {
-        field.type = 'text';
-        open.style.display   = 'none';
-        closed.style.display = 'block';
-      } else {
-        field.type = 'password';
-        open.style.display   = 'block';
-        closed.style.display = 'none';
-      }
-    }
-  </script>
-
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 </body>
 </html>
