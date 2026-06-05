@@ -24,7 +24,6 @@ $total_qty      = $conn->query("SELECT SUM(quantity) as s FROM products WHERE st
 $low_stock      = $conn->query("SELECT COUNT(*) as c FROM products WHERE quantity < 50 AND status='active'")->fetch_assoc()['c'];
 $categories     = $conn->query("SELECT COUNT(DISTINCT category) as c FROM products WHERE status='active'")->fetch_assoc()['c'];
 
-<<<<<<< HEAD
 // Fetch products with search + pagination
 $search   = trim($_GET['search'] ?? '');
 $page     = max(1, intval($_GET['page'] ?? 1));
@@ -58,33 +57,10 @@ $products      = $conn->query("SELECT * FROM products $where ORDER BY id DESC LI
             <i class="fas fa-sync-alt"></i>
             Update Inventory
         </button>
-=======
-// Fetch products with search
-$search = trim($_GET['search'] ?? '');
-$sql = "SELECT * FROM products WHERE status='active'";
-if ($search) {
-    $s = $conn->real_escape_string($search);
-    $sql .= " AND (product_name LIKE '%$s%' OR product_code LIKE '%$s%' OR category LIKE '%$s%')";
-}
-$sql .= " ORDER BY id DESC";
-$products = $conn->query($sql);
-?>
-<?php include 'includes/header.php'; ?>
-
-<div class="page-title-bar">
-    <div>
-        <h2>📦 Inventory Dashboard</h2>
-        <div class="breadcrumb">Home &rsaquo; <span>Inventory</span></div>
-    </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a href="add_product.php" class="btn btn-saffron">➕ Add Product</a>
-        <button class="btn btn-green" onclick="document.getElementById('updateInvModal').classList.add('show')">🔄 Update Inventory</button>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
     </div>
 </div>
 
 <?php if (isset($_GET['success'])): ?>
-<<<<<<< HEAD
 <?php
 $alertMsgs = [
     '1' => ['Product added to inventory successfully.', 'success', 'fa-check-circle'],
@@ -201,81 +177,10 @@ $al = $alertMsgs[$_GET['success']] ?? ['Action completed.','info','fa-info-circl
                     <th scope="col">Last Updated</th>
                     <th scope="col">Status</th>
                     <th scope="col" style="width:130px;">Actions</th>
-=======
-<div class="alert alert-success">✅
-    <?php
-    $msgs = ['1'=>'Product added successfully!','2'=>'Product updated successfully!',
-             '3'=>'Product deleted successfully!','4'=>'Inventory updated successfully!'];
-    echo $msgs[$_GET['success']] ?? 'Action completed.';
-    ?>
-</div>
-<?php endif; ?>
-
-<!-- Stats Cards -->
-<div class="stats-grid">
-    <div class="stat-card s1">
-        <span class="stat-icon">📦</span>
-        <div class="stat-label">Total Products</div>
-        <div class="stat-value"><?= $total_products ?></div>
-    </div>
-    <div class="stat-card s2">
-        <span class="stat-icon">🔢</span>
-        <div class="stat-label">Total Quantity</div>
-        <div class="stat-value"><?= number_format($total_qty) ?></div>
-    </div>
-    <div class="stat-card s4">
-        <span class="stat-icon">⚠️</span>
-        <div class="stat-label">Low Stock Items</div>
-        <div class="stat-value"><?= $low_stock ?></div>
-    </div>
-    <div class="stat-card s3">
-        <span class="stat-icon">🏷️</span>
-        <div class="stat-label">Categories</div>
-        <div class="stat-value"><?= $categories ?></div>
-    </div>
-</div>
-
-<!-- Product Table -->
-<div class="table-card">
-    <div class="table-card-header">
-        <h3>📋 Product Inventory</h3>
-        <div class="header-actions">
-            <a href="history.php" class="btn btn-saffron btn-sm">📋 View History</a>
-        </div>
-    </div>
-
-    <div class="table-search-bar">
-        <form method="GET" style="display:flex;gap:10px;width:100%;flex-wrap:wrap;">
-            <input type="text" name="search" class="search-input"
-                   placeholder="Search by product name, code or category..."
-                   value="<?= htmlspecialchars($search) ?>">
-            <button type="submit" class="btn btn-navy btn-sm">🔍 Search</button>
-            <?php if ($search): ?>
-            <a href="home.php" class="btn btn-sm" style="background:#6c757d;color:white;">✕ Clear</a>
-            <?php endif; ?>
-        </form>
-    </div>
-
-    <div style="overflow-x:auto;">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Product Name</th>
-                    <th>Product Code</th>
-                    <th>Category</th>
-                    <th>Quantity</th>
-                    <th>Unit</th>
-                    <th>Date Added</th>
-                    <th>Last Updated</th>
-                    <th>Status</th>
-                    <th>Actions</th>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
                 </tr>
             </thead>
             <tbody>
             <?php
-<<<<<<< HEAD
             $row_num = $offset + 1;
             if ($products && $products->num_rows > 0):
                 while ($row = $products->fetch_assoc()):
@@ -317,42 +222,11 @@ $al = $alertMsgs[$_GET['success']] ?? ['Action completed.','info','fa-info-circl
                             aria-label="Delete <?= htmlspecialchars($row['product_name']) ?>">
                             <i class="fas fa-trash-alt"></i>
                         </button>
-=======
-            $i = 1;
-            if ($products && $products->num_rows > 0):
-                while ($row = $products->fetch_assoc()):
-                    $qty = $row['quantity'];
-                    if ($qty >= 100) { $badge = 'badge-high'; $qlabel = 'In Stock'; }
-                    elseif ($qty >= 50) { $badge = 'badge-medium'; $qlabel = 'Medium'; }
-                    else { $badge = 'badge-low'; $qlabel = 'Low Stock'; }
-            ?>
-            <tr>
-                <td style="color:#999;font-size:12px;"><?= $i++ ?></td>
-                <td>
-                    <strong><?= htmlspecialchars($row['product_name']) ?></strong>
-                </td>
-                <td><span class="product-code"><?= htmlspecialchars($row['product_code']) ?></span></td>
-                <td><span style="color:#555;font-size:12px;"><?= htmlspecialchars($row['category']) ?></span></td>
-                <td>
-                    <strong style="font-size:15px;"><?= number_format($qty) ?></strong>
-                </td>
-                <td style="color:#777;font-size:12px;"><?= htmlspecialchars($row['unit']) ?></td>
-                <td style="color:#555;font-size:12px;"><?= date('d M Y', strtotime($row['date_added'])) ?></td>
-                <td style="color:#555;font-size:12px;"><?= date('d M Y, h:i A', strtotime($row['last_updated'])) ?></td>
-                <td><span class="badge <?= $badge ?>"><?= $qlabel ?></span></td>
-                <td>
-                    <div style="display:flex;gap:6px;">
-                        <a href="edit_product.php?id=<?= $row['id'] ?>" class="btn btn-navy btn-sm" title="Edit">✏️ Edit</a>
-                        <button class="btn btn-danger btn-sm"
-                            onclick="confirmDelete(<?= $row['id'] ?>, '<?= htmlspecialchars($row['product_name'], ENT_QUOTES) ?>')"
-                            title="Delete">🗑️</button>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
                     </div>
                 </td>
             </tr>
             <?php endwhile; else: ?>
             <tr>
-<<<<<<< HEAD
                 <td colspan="10">
                     <div class="table-empty">
                         <i class="fas fa-box-open"></i>
@@ -365,10 +239,6 @@ $al = $alertMsgs[$_GET['success']] ?? ['Action completed.','info','fa-info-circl
                             <?php endif; ?>
                         </p>
                     </div>
-=======
-                <td colspan="10" style="text-align:center;padding:40px;color:#999;">
-                    <?= $search ? '🔍 No products found matching "'.htmlspecialchars($search).'"' : '📭 No products in inventory. <a href="add_product.php">Add your first product</a>' ?>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
                 </td>
             </tr>
             <?php endif; ?>
@@ -376,7 +246,6 @@ $al = $alertMsgs[$_GET['success']] ?? ['Action completed.','info','fa-info-circl
         </table>
     </div>
 
-<<<<<<< HEAD
     <!-- Pagination + Footer -->
     <div class="card-footer">
         <span>
@@ -417,18 +286,10 @@ $al = $alertMsgs[$_GET['success']] ?? ['Action completed.','info','fa-info-circl
         <?php else: ?>
         <span class="text-muted text-sm">Last refreshed: <?= date('d M Y, H:i') ?></span>
         <?php endif; ?>
-=======
-    <div class="table-footer">
-        <span>Showing <?= $products ? $products->num_rows : 0 ?> product(s)
-            <?= $search ? 'for "'.htmlspecialchars($search).'"' : '' ?>
-        </span>
-        <span>Last refreshed: <?= date('d M Y, h:i A') ?></span>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
     </div>
 </div>
 
 <!-- UPDATE INVENTORY MODAL -->
-<<<<<<< HEAD
 <div class="modal-overlay" id="updateInvModal" role="dialog" aria-modal="true" aria-labelledby="updateInvTitle">
     <div class="modal-dialog">
         <div class="modal-header">
@@ -454,25 +315,11 @@ $al = $alertMsgs[$_GET['success']] ?? ['Action completed.','info','fa-info-circl
                     <i class="fas fa-sync-alt"></i>
                     Confirm Update
                 </button>
-=======
-<div class="modal-overlay" id="updateInvModal">
-    <div class="modal-box">
-        <div class="modal-icon">🔄</div>
-        <h3>Update Inventory</h3>
-        <p>Are you sure you want to <strong>update the entire inventory</strong>?<br>
-           This will refresh all product timestamps and log the action in history.</p>
-        <form method="POST">
-            <input type="hidden" name="confirm_update_inventory" value="1">
-            <div class="modal-actions">
-                <button type="submit" class="btn btn-green">✅ Yes, Update Inventory</button>
-                <button type="button" class="btn btn-navy" onclick="document.getElementById('updateInvModal').classList.remove('show')">❌ Cancel</button>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
             </div>
         </form>
     </div>
 </div>
 
-<<<<<<< HEAD
 <!-- DELETE CONFIRMATION MODAL -->
 <div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
     <div class="modal-dialog">
@@ -497,18 +344,6 @@ $al = $alertMsgs[$_GET['success']] ?? ['Action completed.','info','fa-info-circl
                 <i class="fas fa-trash-alt"></i>
                 Delete Product
             </a>
-=======
-<!-- DELETE MODAL -->
-<div class="modal-overlay" id="deleteModal">
-    <div class="modal-box">
-        <div class="modal-icon">🗑️</div>
-        <h3>Delete Product</h3>
-        <p>Are you sure you want to delete<br><strong id="deleteProductName"></strong>?<br>
-           <span style="color:#dc3545;">This action cannot be undone.</span></p>
-        <div class="modal-actions">
-            <a id="deleteConfirmBtn" href="#" class="btn btn-danger">🗑️ Yes, Delete</a>
-            <button class="btn btn-navy" onclick="document.getElementById('deleteModal').classList.remove('show')">❌ Cancel</button>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
         </div>
     </div>
 </div>
@@ -519,14 +354,6 @@ $al = $alertMsgs[$_GET['success']] ?? ['Action completed.','info','fa-info-circl
         document.getElementById('deleteConfirmBtn').href = 'delete_product.php?id=' + id;
         document.getElementById('deleteModal').classList.add('show');
     }
-<<<<<<< HEAD
-=======
-
-    // Auto open update modal if redirected with action param
-    <?php if (isset($_GET['action']) && $_GET['action'] === 'update_inventory'): ?>
-    document.getElementById('updateInvModal').classList.add('show');
-    <?php endif; ?>
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 </script>
 
 <?php
