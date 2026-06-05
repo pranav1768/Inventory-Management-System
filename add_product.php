@@ -1,6 +1,5 @@
 <?php
 require_once 'includes/db.php';
-<<<<<<< HEAD
 requireAdmin(); // Admin-only page
 
 $pageTitle = 'Add Product – OFV IMS';
@@ -14,22 +13,6 @@ $allowed_products = [
     'Calibur'           => ['unit' => 'Pieces',    'category' => 'Ammunition Components'],
     'Copper Brass'      => ['unit' => 'Kilograms', 'category' => 'Raw Materials'],
     'Packing Container' => ['unit' => 'Units',     'category' => 'Packaging'],
-=======
-requireLogin();
-
-$pageTitle = 'Add Product – OFV IMS';
-$errors = [];
-$success = false;
-
-// Allowed products with their default units and categories
-$allowed_products = [
-    '5.56 Bullet'       => ['unit' => 'Rounds', 'category' => 'Ammunition'],
-    '7.62 Bullet'       => ['unit' => 'Rounds', 'category' => 'Ammunition'],
-    'Primer'            => ['unit' => 'Pieces', 'category' => 'Ammunition Components'],
-    'Calibur'           => ['unit' => 'Pieces', 'category' => 'Ammunition Components'],
-    'Copper Brass'      => ['unit' => 'Kilograms', 'category' => 'Raw Materials'],
-    'Packing Container' => ['unit' => 'Units', 'category' => 'Packaging'],
->>>>>>> 8e508c9b963c8e29112b5e5a4ab939b3626529ab
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
