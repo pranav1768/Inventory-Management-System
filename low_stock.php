@@ -165,4 +165,4 @@ $zero      = $conn->query("SELECT COUNT(*) as c FROM products WHERE quantity = 0
 $conn->close();
 include 'includes/footer.php';
 ?>
-  
+                                     
