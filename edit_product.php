@@ -272,4 +272,4 @@ function selectProduct(name) {
 $conn->close();
 include 'includes/footer.php';
 ?>
- 
+   
